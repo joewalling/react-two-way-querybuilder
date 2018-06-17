@@ -16,7 +16,9 @@ class Rule extends React.Component {
     this.getFieldByName = this.getFieldByName.bind(this);
     this.generateRuleObject = this.generateRuleObject.bind(this);
     this.onFieldChanged = this.onFieldChanged.bind(this);
+    this.changeFieldValue = this.changeFieldValue.bind(this);
     this.onOperatorChanged = this.onOperatorChanged.bind(this);
+    this.changeOperatorValue = this.changeOperatorValue.bind(this);
     this.onInputChanged = this.onInputChanged.bind(this);
     this.getInputTag = this.getInputTag.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -34,15 +36,23 @@ class Rule extends React.Component {
   }
 
   onFieldChanged(event) {
-    this.node.field = event.target.value;
-    const field = this.getFieldByName(event.target.value);
+    this.changeFieldValue(event.target.value);
+  }
+
+  changeFieldValue(value) {
+    this.node.field = value;
+    const field = this.getFieldByName(value);
     const rule = this.generateRuleObject(field, this.node);
     this.setState({ currField: rule });
     this.props.onChange();
   }
 
   onOperatorChanged(event) {
-    this.node.operator = event.target.value;
+    this.changeOperatorValue(event.target.value);
+  }
+
+  changeOperatorValue(value) {
+    this.node.operator = value;
     const field = this.getFieldByName(this.node.field);
     const rule = this.generateRuleObject(field, this.node);
     this.setState({ currField: rule });
@@ -128,27 +138,74 @@ class Rule extends React.Component {
     this.props.onChange();
   }
 
+  renderDefaultFieldsSelect() {
+    return (
+      <select
+        value={this.node.field}
+        className={this.styles.select}
+        onChange={this.onFieldChanged}
+      >
+        {this.props.fields.map((field, index) =>
+          <option value={field.name} key={index}>{field.label}</option>
+        )}
+      </select>
+    );
+  }
+
+  renderDefaultOperatorsSelect() {
+    return (
+      <select
+        value={this.node.operator}
+        className={this.styles.select}
+        onChange={this.onOperatorChanged}
+      >
+        {this.state.currField.operators.map((operator, index) =>
+          <option value={operator.operator} key={index}>{operator.label}</option>
+        )}
+      </select>
+    );
+  }
+
+  renderCustomFieldsSelect() {
+    const { selectRenderer } = this.props;
+
+    return selectRenderer({
+      options: this.props.fields.map(({ name, label }) => ({
+        value: name,
+        label,
+      })),
+      value: this.node.field,
+      onChange: this.changeFieldValue,
+    });
+  }
+
+  renderCustomOperatorsSelect() {
+    const { selectRenderer } = this.props;
+
+    return selectRenderer({
+      options: this.state.currField.operators
+        .map(({ operator, label }) => ({
+          value: operator,
+          label,
+      })),
+      value: this.node.operator,
+      onChange: this.changeOperatorValue,
+    });
+  }
+
   render() {
+    const { selectRenderer } = this.props;
+
     return (
       <div className={this.styles.rule}>
-        <select
-          value={this.node.field}
-          className={this.styles.select}
-          onChange={this.onFieldChanged}
-        >
-          {this.props.fields.map((field, index) =>
-            <option value={field.name} key={index}>{field.label}</option>
-          )}
-        </select>
-        <select
-          value={this.node.operator}
-          className={this.styles.select}
-          onChange={this.onOperatorChanged}
-        >
-          {this.state.currField.operators.map((operator, index) =>
-            <option value={operator.operator} key={index}>{operator.label}</option>
-          )}
-        </select>
+        {selectRenderer
+          ? this.renderCustomFieldsSelect()
+          : this.renderDefaultFieldsSelect()
+        }
+        {selectRenderer
+          ? this.renderCustomOperatorsSelect()
+          : this.renderDefaultOperatorsSelect()
+        }
         {this.getInputTag(this.state.currField.input.type)}
         <button
           className={this.styles.deleteBtn}
@@ -167,6 +224,7 @@ Rule.propTypes = {
   onChange: PropTypes.func,
   operators: PropTypes.array.isRequired,
   styles: PropTypes.object.isRequired,
+  selectRenderer: PropTypes.func,
 };
 
 export default Rule;

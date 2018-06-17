@@ -16,6 +16,7 @@ class Condition extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleChildUpdate = this.handleChildUpdate.bind(this);
     this.combinatorChange = this.combinatorChange.bind(this);
+    this.setCombinatorValue = this.setCombinatorValue.bind(this);
     this.styles = this.props.config.styles;
   }
 
@@ -53,23 +54,49 @@ class Condition extends React.Component {
     this.props.onChange(this.props.data);
   }
 
-  combinatorChange(event) {
-    this.node.combinator = event.target.value;
+  setCombinatorValue(value) {
+    this.node.combinator = value;
     this.props.onChange(this.props.data);
   }
 
+  combinatorChange(event) {
+    this.setCombinatorValue(event.target.value)
+  }
+
+  renderDefaultSelect() {
+    return (
+      <select value={this.state.data.combinator} className={this.styles.select} onChange={this.combinatorChange}>
+        {this
+          .props
+          .config
+          .combinators
+          .map((combinator, index) => {
+            return <option value={combinator.combinator} key={index}>{combinator.label}</option>;
+          })}
+      </select>
+    );
+  }
+
+  renderCustomSelect() {
+    const { selectRenderer } = this.props.config;
+
+    return selectRenderer({
+      value: this.state.data.combinator,
+      className: this.styles.select,
+      onChange: this.setCombinatorValue,
+      options: this.props.config.combinators.map(({ combinator, label }) => ({
+        value: combinator,
+        label,
+      })),
+    });
+  }
+
   render() {
+    const { selectRenderer } = this.props.config;
+
     return (
       <div className={this.styles.condition}>
-        <select value={this.state.data.combinator} className={this.styles.select} onChange={this.combinatorChange}>
-          {this
-            .props
-            .config
-            .combinators
-            .map((combinator, index) => {
-              return <option value={combinator.combinator} key={index}>{combinator.label}</option>;
-            })}
-        </select>
+        {selectRenderer ? this.renderCustomSelect() : this.renderDefaultSelect()}
         <button className={this.styles.primaryBtn} onClick={this.addCondition}>
           {this.props.buttonsText.addGroup}
         </button>
@@ -95,7 +122,8 @@ class Condition extends React.Component {
                 nodeName={rule.nodeName}
                 data={this.props.data}
                 onChange={this.handleChildUpdate}
-                styles={this.props.config.styles} />);
+                styles={this.props.config.styles}
+                selectRenderer={selectRenderer}/>);
             } else {
               return (<Condition
                 key={index}
@@ -119,6 +147,7 @@ Condition.propTypes = {
   fields: PropTypes.array.isRequired,
   nodeName: PropTypes.string.isRequired,
   onChange: PropTypes.func,
+  selectRenderer: PropTypes.func,
 };
 
 export default Condition;
