@@ -39,24 +39,8 @@ class Rule extends React.Component {
     this.changeFieldValue(event.target.value);
   }
 
-  changeFieldValue(value) {
-    this.node.field = value;
-    const field = this.getFieldByName(value);
-    const rule = this.generateRuleObject(field, this.node);
-    this.setState({ currField: rule });
-    this.props.onChange();
-  }
-
   onOperatorChanged(event) {
     this.changeOperatorValue(event.target.value);
-  }
-
-  changeOperatorValue(value) {
-    this.node.operator = value;
-    const field = this.getFieldByName(this.node.field);
-    const rule = this.generateRuleObject(field, this.node);
-    this.setState({ currField: rule });
-    this.props.onChange();
   }
 
   onInputChanged(event) {
@@ -110,6 +94,22 @@ class Rule extends React.Component {
           }
         </div>);
     }
+  }
+
+  changeOperatorValue(value) {
+    this.node.operator = value;
+    const field = this.getFieldByName(this.node.field);
+    const rule = this.generateRuleObject(field, this.node);
+    this.setState({ currField: rule });
+    this.props.onChange();
+  }
+
+  changeFieldValue(value) {
+    this.node.field = value;
+    const field = this.getFieldByName(value);
+    const rule = this.generateRuleObject(field, this.node);
+    this.setState({ currField: rule });
+    this.props.onChange();
   }
 
   generateRuleObject(field, node) {
@@ -187,7 +187,7 @@ class Rule extends React.Component {
         .map(({ operator, label }) => ({
           value: operator,
           label,
-      })),
+        })),
       value: this.node.operator,
       onChange: this.changeOperatorValue,
     });

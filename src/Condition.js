@@ -20,6 +20,11 @@ class Condition extends React.Component {
     this.styles = this.props.config.styles;
   }
 
+  setCombinatorValue(value) {
+    this.node.combinator = value;
+    this.props.onChange(this.props.data);
+  }
+
   addRule() {
     const data = this.state.data;
     const nodeName = this.treeHelper.generateNodeName(this.state.data);
@@ -54,18 +59,17 @@ class Condition extends React.Component {
     this.props.onChange(this.props.data);
   }
 
-  setCombinatorValue(value) {
-    this.node.combinator = value;
-    this.props.onChange(this.props.data);
-  }
-
   combinatorChange(event) {
-    this.setCombinatorValue(event.target.value)
+    this.setCombinatorValue(event.target.value);
   }
 
   renderDefaultSelect() {
     return (
-      <select value={this.state.data.combinator} className={this.styles.select} onChange={this.combinatorChange}>
+      <select
+        value={this.state.data.combinator}
+        className={this.styles.select}
+        onChange={this.combinatorChange}
+      >
         {this
           .props
           .config
@@ -123,7 +127,7 @@ class Condition extends React.Component {
                 data={this.props.data}
                 onChange={this.handleChildUpdate}
                 styles={this.props.config.styles}
-                selectRenderer={selectRenderer}/>);
+                selectRenderer={selectRenderer} />);
             } else {
               return (<Condition
                 key={index}
