@@ -20,6 +20,7 @@ class Rule extends React.Component {
     this.onOperatorChanged = this.onOperatorChanged.bind(this);
     this.changeOperatorValue = this.changeOperatorValue.bind(this);
     this.onInputChanged = this.onInputChanged.bind(this);
+    this.updateInput = this.updateInput.bind(this);
     this.getInputTag = this.getInputTag.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.treeHelper = new TreeHelper(this.props.data);
@@ -44,11 +45,15 @@ class Rule extends React.Component {
   }
 
   onInputChanged(event) {
+    this.updateInput(event.target.value);
+  }
+
+  updateInput(value) {
     const pattern = this.state.currField.input.pattern;
     if (pattern) {
-      this.setState({ validationError: isValueCorrect(pattern, event.target.value) });
+      this.setState({ validationError: isValueCorrect(pattern, value) });
     }
-    this.node.value = event.target.value;
+    this.node.value = value;
     const field = this.getFieldByName(this.node.field);
     const rule = this.generateRuleObject(field, this.node);
     this.setState({ currField: rule });
@@ -80,6 +85,22 @@ class Rule extends React.Component {
           {this.state.currField.input.options.map((option, index) =>
             <option value={option.value} key={index}>{option.name}</option>)}
         </select>);
+      case 'date': return this.props.datepickerRenderer
+        ? this.renderCustomDatepicker()
+        : (
+          <div>
+            <input
+              type={this.state.currField.input.type}
+              value={this.node.value}
+              onChange={this.onInputChanged} className={this.styles.input}
+            />
+            {
+              this.state.validationError
+              ? <p className={this.styles.error}>{errorText || defaultErrorMsg}</p>
+              : null
+            }
+          </div>
+        );
       default: return (
         <div>
           <input
@@ -136,6 +157,15 @@ class Rule extends React.Component {
   handleDelete() {
     this.treeHelper.removeNodeByName(this.props.nodeName);
     this.props.onChange();
+  }
+
+  renderCustomDatepicker() {
+    const { datepickerRenderer } = this.props;
+
+    return datepickerRenderer({
+      value: this.node.value,
+      onChange: this.updateInput,
+    });
   }
 
   renderDefaultFieldsSelect() {
@@ -225,6 +255,7 @@ Rule.propTypes = {
   operators: PropTypes.array.isRequired,
   styles: PropTypes.object.isRequired,
   selectRenderer: PropTypes.func,
+  datepickerRenderer: PropTypes.func,
 };
 
 export default Rule;

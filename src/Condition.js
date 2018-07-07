@@ -96,7 +96,7 @@ class Condition extends React.Component {
   }
 
   render() {
-    const { selectRenderer } = this.props.config;
+    const { selectRenderer, datepickerRenderer } = this.props.config;
 
     return (
       <div className={this.styles.condition}>
@@ -127,7 +127,8 @@ class Condition extends React.Component {
                 data={this.props.data}
                 onChange={this.handleChildUpdate}
                 styles={this.props.config.styles}
-                selectRenderer={selectRenderer} />);
+                selectRenderer={selectRenderer}
+                datepickerRenderer={datepickerRenderer} />);
             } else {
               return (<Condition
                 key={index}
@@ -152,6 +153,7 @@ Condition.propTypes = {
   nodeName: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   selectRenderer: PropTypes.func,
+  datepickerRenderer: PropTypes.func,
 };
 
 export default Condition;
