@@ -1,15 +1,15 @@
 {
-  "name": "react-two-way-querybuilder-custom-select-fork",
+  "name": "react-two-way-querybuilder-ra",
   "version": "1.0.10",
   "description": "React Two Way Querybuilder Component",
-  "author": "Vladimir Ostapenko",
-  "homepage": "https://github.com/Lefortov/react-two-way-querybuilder",
+  "author": "Walling Info Systems",
+  "homepage": "https://github.com/joewalling/react-two-way-querybuilder",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Lefortov/react-two-way-querybuilder.git"
+    "url": "https://github.com/joewalling/react-two-way-querybuilder.git"
   },
   "bugs": {
-    "url": "https://github.com/Lefortov/react-two-way-querybuilder/issues"
+    "url": "https://github.com/joewalling/react-two-way-querybuilder/issues"
   },
   "license": "MIT",
   "scripts": {
