@@ -7,7 +7,7 @@ A simple react component that lets you build queries dynamically on UI. Doesn't 
 ## Installing
 
 ```bash
-npm i react-two-way-querybuilder-custom-select-fork --save
+npm i react-two-way-querybuilder-ra --save
 ```
 
 ## Using
@@ -18,7 +18,7 @@ Simple usage:
 
 ```
     import React, { Component } from 'react';
-    import TwoWayQuerybuilder from 'react-two-way-querybuilder';
+    import TwoWayQuerybuilder from 'react-two-way-querybuilder-ra';
 
     const fields = [
       { name: 'firstName', operators: 'all', label: 'First Name', input: { type: 'text' } },
@@ -102,7 +102,7 @@ Visit [DEMO](https://lefortov.github.io/react-two-way-querybuilder) storybook to
 - **existing query**:
   ```
     import React, { Component } from 'react';
-    import TwoWayQuerybuilder from 'react-two-way-querybuilder';;
+    import TwoWayQuerybuilder from 'react-two-way-querybuilder-ra';;
 
     const fields = [
       { name: 'firstName', operators: 'all', label: 'First Name', input: { type: 'text' } },
@@ -134,7 +134,7 @@ Visit [DEMO](https://lefortov.github.io/react-two-way-querybuilder) storybook to
 - **changed input types**:
   ```
     import React, { Component } from 'react';
-    import TwoWayQuerybuilder from 'react-two-way-querybuilder';;
+    import TwoWayQuerybuilder from 'react-two-way-querybuilder-ra';;
 
     const changedFields = [
       { name: 'firstName', operators: 'all', label: 'First Name', input: { type: 'text' } },
@@ -172,7 +172,7 @@ Visit [DEMO](https://lefortov.github.io/react-two-way-querybuilder) storybook to
 - **custom styles**
   ```
     import React, { Component } from 'react';
-    import TwoWayQuerybuilder from 'react-two-way-querybuilder';;
+    import TwoWayQuerybuilder from 'react-two-way-querybuilder-ra';;
 
     const fields = [
       { name: 'firstName', operators: 'all', label: 'First Name', input: { type: 'text' } },
@@ -213,7 +213,7 @@ Visit [DEMO](https://lefortov.github.io/react-two-way-querybuilder) storybook to
 - **validation**
   ```
     import React, { Component } from 'react';
-    import TwoWayQuerybuilder from 'react-two-way-querybuilder';;
+    import TwoWayQuerybuilder from 'react-two-way-querybuilder-ra';;
 
     const validationFields = [
       { name: 'firstName', operators: 'all', label: 'First Name', input: {
