@@ -128,7 +128,7 @@ export default class QueryParser {
     }
     // To remove first | character
     pattern = pattern.slice(1);
-    return new RegExp(pattern, 'g');
+    return new RegExp(pattern);
   }
 
   static getFirstCombinator(element, combinators) {
