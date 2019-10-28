@@ -26,7 +26,7 @@ export default class QueryParser {
   }
 
   static convertSyntaxTreeToData(element, data, combinators, nodeName, combNodeName) {
-    data = data ? data : {};
+    data = data || {};
     let newCombName = combNodeName;
     const firstCombinator = this.getFirstCombinator(element, combinators);
     const treeHelper = new TreeHelper(data);
@@ -128,7 +128,7 @@ export default class QueryParser {
     }
     // To remove first | character
     pattern = pattern.slice(1);
-    return new RegExp(pattern);
+    return new RegExp(pattern, 'g');
   }
 
   static getFirstCombinator(element, combinators) {
