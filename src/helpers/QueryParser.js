@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import TreeHelper from './TreeHelper';
 import ASTree from './ASTree';
 
@@ -26,7 +27,7 @@ export default class QueryParser {
   }
 
   static convertSyntaxTreeToData(element, data, combinators, nodeName, combNodeName) {
-    data = data ? data : {};
+    data = data || {};
     let newCombName = combNodeName;
     const firstCombinator = this.getFirstCombinator(element, combinators);
     const treeHelper = new TreeHelper(data);
@@ -88,7 +89,7 @@ export default class QueryParser {
 
   static createTokenObject(token, operators) {
     const operatorsPattern = this.getSearchPattern(operators, 'operator');
-    const matches = this.matchAll(token, operatorsPattern);
+    const matches = this.matchAll(token, operatorsPattern, 1);
     const mathesLength = matches.map(el => el.value).join('').length;
     const operatorEndIndex = matches[0].index + mathesLength;
     return {
@@ -98,17 +99,23 @@ export default class QueryParser {
     };
   }
 
-  static matchAll(str, regex) {
+  static matchAll(str, regex, groupIndex = 0) {
     const res = [];
     let m;
     if (regex.global) {
       while (m = regex.exec(str)) {
-        res.push({ value: m[0], index: m.index });
+        this.pushMatch(m, groupIndex, res);
       }
     } else if (m = regex.exec(str)) {
-      res.push({ value: m[0], index: m.index });
+      this.pushMatch(m, groupIndex, res);
     }
     return res;
+  }
+
+  static pushMatch(m, groupIndex, res) {
+    const fullMatch = m[0];
+    const groupMatch = m[groupIndex];
+    res.push({ value: groupMatch, index: m.index + fullMatch.indexOf(groupMatch) });
   }
 
   static getCombinatorsIndexes(query, combinators) {
@@ -116,7 +123,10 @@ export default class QueryParser {
     const combinatorsPattern = this.getSearchPattern(combinators, 'combinator');
     let match;
     while ((match = combinatorsPattern.exec(query)) !== null) {
-      combinatorsIndexes.push({ start: match.index, end: combinatorsPattern.lastIndex });
+      const fullMatch = match[0];
+      const groupMatch = match[1];
+      const startIndex = match.index + fullMatch.indexOf(groupMatch);
+      combinatorsIndexes.push({ start: startIndex, end: startIndex + groupMatch.length });
     }
     return combinatorsIndexes;
   }
@@ -128,7 +138,7 @@ export default class QueryParser {
     }
     // To remove first | character
     pattern = pattern.slice(1);
-    return new RegExp(pattern, 'g');
+    return new RegExp(`[\\s^]+(${pattern})[\\s$]+`, 'g');
   }
 
   static getFirstCombinator(element, combinators) {

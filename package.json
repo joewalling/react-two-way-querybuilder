@@ -1,6 +1,6 @@
 {
   "name": "react-two-way-querybuilder-ra",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "React Two Way Querybuilder Component",
   "author": "Walling Info Systems",
   "homepage": "https://github.com/joewalling/react-two-way-querybuilder",
@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prepublish": ".\\.scripts\\prepublish.bat",
+    "prepublish": ". ./.scripts/prepublish.sh",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
     "testonly": "mocha --require .scripts/mocha_runner src/**/tests/**/*.js",
