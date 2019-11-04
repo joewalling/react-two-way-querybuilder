@@ -79,6 +79,7 @@ class TwoWayQuerybuilder extends React.Component {
   render() {
     return (<div>
       <Condition
+        key={'1'}
         config={this.config}
         buttonsText={this.buttonsText}
         fields={this.props.fields}
