@@ -187,7 +187,7 @@ class Rule extends React.Component {
             <input
               type={this.state.currField.input.type}
               value={this.node.value}
-              onChange={this.onInputChanged}
+              onInput={this.onInputChanged}
               className={this.styles.input}
               ref={(instance) => {
                 this.inputRef = instance;
